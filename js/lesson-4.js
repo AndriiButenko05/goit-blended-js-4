@@ -64,8 +64,12 @@ newLi.append(newH);
 newLi.append(newP);
 list.append(newLi);
 // 19 - зроби це саме, але використовуй шаблонні рядки та метод insertAdjacentHTML()
-newLi.insertAdjacentHTML("beforeend", `<h3>Властивість innerHTML</h3><p>Ще один спосіб створити DOM-елементи і помістити їх в дерево - це використовувати рядки з тегами і дозволити браузеру зробити всю важку роботу</p>`);
+list.insertAdjacentHTML("beforeend",
+    `<h3>Властивість innerHTML</h3>
+    <p>Ще один спосіб створити DOM-елементи і помістити їх в дерево - це використовувати рядки з тегами і дозволити браузеру зробити всю важку роботу</p>`
+);
 // 20 - очисти список
+// list.innerHTML = '';
 
 
 // Task 2
@@ -87,3 +91,110 @@ for (let i = 0; i <= 100; i++){
 }
 
 // Task 3
+// Form Events, Input, Focus, Blur and Submit.
+// Використовуй шаблон форми з файлу html.
+// 1 - При події `input`, якщо користувач ввів в поле більше
+// 6 символів то додати клас `success`. Якщо ж символів менше аніж 6,
+// то клас `error`
+// 2 - При події `focus` зроби перевірку на пустоту поля інпута,
+// якщо ж поле пусте, то зроби `outline` => `'3px solid red'`,
+// якщо при фокусі поле непусте, то `outline` => `'3px solid green'`
+// 3 - При події `blur` зроби перевірку на пустоту поля інпута,
+// якщо ж поле пусте, то зроби `outline` => `'3px solid red'`,
+// якщо при фокусі поле непусте, то `outline` => `'3px solid lime'`
+// 4 - При події `submit`. Відміни поведінку браузера по змовчуванню.
+// Дістань данні з інпуту і чек боксу, зроби перевірку,
+// що інпут не порожній, також, що нажатий чек бокс у положення true,
+// якщо користувач все виконав вірно, збери данні (userName)
+// у обьект і виведи у консоль. У разі, якщо користувач не виконав
+// одну із умов, виведи повідомлення. Також при події інпут реалізуй додавання
+// ім`я користувача у span, замість слова "Anonymous".
+// Якщо користувач ввів ім`я, а потім видалив, зроби так,
+// щоб на місце повернулось дефолтне знаяення "Anonymous".
+// При відправці форми, очисти інпут, верни чек бокс у положення
+// false, верни дефолтне значення "Anonymous" у span.
+
+const form = document.querySelector('.contact-form');
+const input = document.querySelector('.contact-form-input');
+const checkbox = document.querySelector('.contact-form-checkbox');
+const span = document.querySelector('.js-username-output');
+input.addEventListener('input', (event) => {
+    if (event.target.value.length >= 6) {
+        input.classList.add('success');
+        input.classList.remove('error');
+    } else {
+        input.classList.add('error');
+        input.classList.remove('success');
+    }
+});
+
+// input.addEventListener('focus', (event) => {
+//     if (event.target.value.trim() === '') {
+//         input.style.outline = '3px solid red';
+//     } else {
+//         input.style.outline = '3px solid green';
+//     }
+// });
+
+input.addEventListener('blur', (event) => {
+    if (event.target.value.trim() === '') {
+        input.style.outline = '3px solid red';
+    } else {
+        input.style.outline = '3px solid lime';
+    }
+});
+
+input.addEventListener('input', (event) => {
+    if (event.target.value.trim() === '') {
+        span.textContent = 'Anonymous';
+    } else {
+        span.textContent = event.target.value;
+    }
+});
+
+form.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (input.value === '' || !checkbox.checked) {
+        alert('Please fill in the input and check the checkbox');
+        return;
+    }
+    const userName = input.value.trim();
+    const user = {
+        userName
+    }
+    console.log(user);
+    input.value = '';
+    checkbox.checked = false;
+    span.textContent = 'Anonymous';
+});
+  
+// Task 4
+// Використовуй шаблон розмітки з файлу html та напиши наступний функціонал:
+// При кліку на кнопку "Зменшити" квадрат стає меньшим на 20 пікселів,
+// При кліку на кнопку "Збільшити" - квадрат стає більшим на 20 пікселів.
+const decrease = document.querySelector('.js-decrease');
+const increase = document.querySelector('.js-increase');
+const square = document.querySelector('.box');
+decrease.addEventListener('click', () => {
+    const currentWidth = parseInt(window.getComputedStyle(square).width);
+    const currentHeight = parseInt(window.getComputedStyle(square).height);
+    square.style.width = `${currentWidth - 20}px`;
+    square.style.height = `${currentHeight - 20}px`;
+})
+increase.addEventListener('click', () => {
+    const currentWidth = parseInt(window.getComputedStyle(square).width);
+    const currentHeight = parseInt(window.getComputedStyle(square).height);
+    square.style.width = `${currentWidth + 20}px`;
+    square.style.height = `${currentHeight + 20}px`;
+})
+ 
+// При кліку на кнопку "Подвоїти" збільшувати значення в кожному
+// елементі списку в два рази.
+const doubleList = document.querySelector('.list-second');
+const doubleButton = document.querySelector('#double');
+doubleButton.addEventListener('click', () => {
+    const liItems = doubleList.querySelectorAll('.listItem');
+    liItems.forEach(li => {
+        li.textContent = parseInt(li.textContent) * 2;
+    })
+});
